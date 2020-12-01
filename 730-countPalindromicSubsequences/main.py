@@ -22,7 +22,7 @@ class Solution:
                 # print('cache', (l, r))
                 return cache[(l, r)]
 
-            cnt = 1 # empty palindromic, important!
+            cnt = 0
             for c in range(4):
                 l0 = first[l][c]
                 r0 = last[r][c]
@@ -30,19 +30,19 @@ class Solution:
                     continue
                 cnt += 1 # single char palindromic
                 if l0 < r0:
-                    cnt += calc(l0 + 1, r0 - 1)
+                    cnt += calc(l0 + 1, r0 - 1) + 1 # the last 1 for empty subsequence
 
             cnt %= base
             cache[(l, r)] = cnt
             return cnt
 
-        res = calc(0, n - 1) - 1 # remove empty palindromic
+        res = calc(0, n - 1)
         # print(cache)
         return res
 
 sol = Solution()
 s = 'bccb'
-# s = 'abcdabcdabcdabcdabcdabcdabcdabcddcbadcbadcbadcbadcbadcbadcbadcba' # 3104860382 -> 104860361
+s = 'abcdabcdabcdabcdabcdabcdabcdabcddcbadcbadcbadcbadcbadcbadcbadcba' # 3104860382 -> 104860361
 # s = 'a' # 1
 r = sol.countPalindromicSubsequences(s)
 print(s)
