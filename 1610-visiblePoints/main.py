@@ -20,7 +20,7 @@ class Solution:
             if x == 0 and y == 0:
                 alwaysSeen += 1
             else:
-                angles.append(math.atan2(y, x)) # [-pi, pi)
+                angles.append(math.atan2(y, x)) # (-pi, pi)
 
         if not angles:
             return alwaysSeen
