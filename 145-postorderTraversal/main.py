@@ -7,19 +7,6 @@ class TreeNode:
         self.left = left
         self.right = right
 
-def build_tree2(vals):
-    if not vals:
-        return None
-
-    v = vals.pop(0)
-    if v is None:
-        return None
-
-    root = TreeNode(v)
-    root.left = build_tree(vals)
-    root.right = build_tree(vals)
-    return root
-
 def build_tree(vals):
     if not vals:
         return None
