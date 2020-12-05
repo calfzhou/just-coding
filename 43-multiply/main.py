@@ -44,7 +44,7 @@ sol = Solution()
 data = "2", "3" # "6"
 data = "123", "456" # "56088"
 # data = "9", "9" # "81"
-data = "123456789", "987654321"
+data = "123456789", "987654321" # 121932631112635269
 print(data)
 res = sol.multiply(*data)
 print(res)
