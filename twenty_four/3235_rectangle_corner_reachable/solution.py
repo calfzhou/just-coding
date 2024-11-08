@@ -14,16 +14,31 @@ RT = R | T
 class Cluster:
     def __init__(self, circle: List[int], edges: int):
         self.circles = [circle]
-        self.edges = edges
+        self.edges = edges # cross edges bit map 0bTBLR
+
+        x, y, r = circle
+        self.top = y + r
+        self.bottom = y - r
+        self.left = x - r
+        self.right = x + r
 
     def merge(self, other: 'Cluster'):
         self.circles.extend(other.circles)
         self.edges |= other.edges
 
+        self.top = max(self.top, other.top)
+        self.bottom = min(self.bottom, other.bottom)
+        self.left = min(self.left, other.left)
+        self.right = max(self.right, other.right)
+
+    def is_out_of_bound(self, circle: List[int]):
+        x, y, r = circle
+        return x + r < self.left or x - r > self.right or y + r < self.bottom or y - r > self.top
+
 
 class Solution:
     def canReachCorner(self, xCorner: int, yCorner: int, circles: List[List[int]]) -> bool:
-        clusters = [] # [circles, cross edges bit map TBLR]
+        clusters = []
         for circle in circles:
             edges, out_of_rect = self._calc_crossed_edges(xCorner, yCorner, circle)
             if self._is_unreachable(edges):
@@ -35,6 +50,11 @@ class Solution:
             new_clusters = []
             this_cluster = Cluster(circle, edges)
             for cluster in clusters:
+                # A quick prune.
+                if cluster.is_out_of_bound(circle):
+                    new_clusters.append(cluster)
+                    continue
+
                 for circle2 in cluster.circles:
                     if self._are_circles_connected_inside_rect(circle, circle2, xCorner, yCorner):
                         this_cluster.merge(cluster)
@@ -52,6 +72,11 @@ class Solution:
     def _are_circles_connected(self, circle1: List[int], circle2: List[int]) -> bool:
         x1, y1, r1 = circle1
         x2, y2, r2 = circle2
+
+        # Prune by bound box.
+        if x2 + r2 < x1 - r1 or x2 - r2 > x1 + r1 or y2 + r2 < y1 - r1 or y2 - r2 > y1 + r1:
+            return False
+
         distance_square = (x1 - x2) ** 2 + (y1 - y2) ** 2
         radius_sum_square = (r1 + r2) ** 2
         return distance_square <= radius_sum_square
