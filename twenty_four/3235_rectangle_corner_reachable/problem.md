@@ -34,7 +34,7 @@
 
 **提示：**
 
-- `3 <= xCorner, yCorner <= 109`
+- `3 <= xCorner, yCorner <= 10^9`
 - `1 <= circles.length <= 1000`
 - `circles[i].length == 3`
-- `1 <= xi, yi, ri <= 109`
+- `1 <= xi, yi, ri <= 10^9`
